@@ -1,21 +1,37 @@
 import "reflect-metadata";
-import {createConnection} from "typeorm";
-import {User} from "./entity/User";
+import express = require("express");
+import { createConnection } from "typeorm";
+import { ApolloServer } from "apollo-server-express";
+import { User } from "./entity/User";
+import { buildSchema } from "type-graphql";
+import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 
-createConnection().then(async connection => {
+//
+// ─── CONSTANT ───────────────────────────────────────────────────────────────────
+//
+const PORT = 4000;
+// ────────────────────────────────────────────────────────────────────────────────
 
-    console.log("Inserting a new user into the database...");
-    const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.age = 25;
-    await connection.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
+// IIFE XD
+(async () => {
+  const app = express();
 
-    console.log("Loading users from the database...");
-    const users = await connection.manager.find(User);
-    console.log("Loaded users: ", users);
+  await createConnection();
 
-    console.log("Here you can setup and run express/koa/any other framework.");
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [HandShakeResolver],
+    }),
+    context: ({ req, res }) => ({ req, res }),
+  });
+  await apolloServer.start();
 
-}).catch(error => console.log(error));
+  apolloServer.applyMiddleware({ app, cors: true });
+
+  app.listen(PORT, () => {
+    console.log(`Express server is currently running in port ${PORT}`);
+    console.log(
+      `🚀 GQL SERVER at http://localhost:${PORT}${apolloServer.graphqlPath}`
+    );
+  });
+})();

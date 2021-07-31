@@ -1,0 +1,19 @@
+{
+   "name": "shortenerous",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "devDependencies": {
+      "@types/node": "^8.0.29",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "better-sqlite3": "^7.4.3",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.35"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts",
+      "dev": "nodemon src/index.ts"
+   }
+}

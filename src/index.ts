@@ -7,6 +7,13 @@ import { buildSchema } from "type-graphql";
 import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 
 //
+// ─── IOC ────────────────────────────────────────────────────────────────────────
+//
+import { Container } from "typedi";
+import { UserResolver } from "./resolvers/UserResolver";
+// ────────────────────────────────────────────────────────────────────────────────
+
+//
 // ─── CONSTANT ───────────────────────────────────────────────────────────────────
 //
 const PORT = 4000;
@@ -20,7 +27,8 @@ const PORT = 4000;
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HandShakeResolver],
+      resolvers: [HandShakeResolver, UserResolver],
+      container: Container, // di container
     }),
     context: ({ req, res }) => ({ req, res }),
   });

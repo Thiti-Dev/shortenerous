@@ -1,8 +1,7 @@
 import "reflect-metadata";
 import express = require("express");
-import { createConnection } from "typeorm";
+import { createConnection, useContainer } from "typeorm";
 import { ApolloServer } from "apollo-server-express";
-import { User } from "./entity/User";
 import { buildSchema } from "type-graphql";
 import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 
@@ -10,6 +9,7 @@ import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 // ─── IOC ────────────────────────────────────────────────────────────────────────
 //
 import { Container } from "typedi";
+import { Container as ORMDIContainer } from "typeorm-typedi-extensions";
 import { UserResolver } from "./resolvers/UserResolver";
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -23,6 +23,7 @@ const PORT = 4000;
 (async () => {
   const app = express();
 
+  useContainer(ORMDIContainer);
   await createConnection();
 
   const apolloServer = new ApolloServer({

@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 
 const VALIDATION_ERROR_CODE = "ValidationError";
+const GRAPHQL_BULITIN_VALIDATION_CODE = "GRAPHQL_VALIDATION_FAILED";
 
 interface ILegacyValidationError {
   target: Object;
@@ -10,6 +11,7 @@ interface ILegacyValidationError {
 }
 
 export const ApolloFormatErrorPipe = (error: GraphQLError) => {
+  // @NOTE -> First handler for the validation from the class-transform to have the readable format
   try {
     const validationErrors = error.extensions.exception.validationErrors;
     const totalField = validationErrors.length; // this should throw the error if it isn't validation error -> so it would go down to the catch section
@@ -27,7 +29,17 @@ export const ApolloFormatErrorPipe = (error: GraphQLError) => {
       data: formatted_error_key_pair,
     };
   } catch (_) {
-    // other errror
+    // other errrors
+
+    // @NOTE Handler for the built-in of graphql validation error ex (missing field . . . . bla bla bla)
+    if (error.extensions.code === GRAPHQL_BULITIN_VALIDATION_CODE) {
+      console.log(error.message);
+      return {
+        message: GRAPHQL_BULITIN_VALIDATION_CODE,
+        code: GRAPHQL_BULITIN_VALIDATION_CODE,
+        data: error.message,
+      };
+    }
     return error;
   }
 };

@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { User } from "../entity/User";
 import { UserRepository } from "../repository/UserRepository";
+import { CreateUserInput } from "../resolvers/InputTypes/User.InputTypes";
 
 @Service()
 export class UserService {
@@ -16,5 +17,9 @@ export class UserService {
 
   async getUsers() {
     return this.userRepository.getUsers();
+  }
+
+  async createUser(input: CreateUserInput): Promise<User> {
+    return this.userRepository.createUser(input);
   }
 }

@@ -14,6 +14,12 @@ import { UserResolver } from "./resolvers/UserResolver";
 // ────────────────────────────────────────────────────────────────────────────────
 
 //
+// ─── FORMATTER ──────────────────────────────────────────────────────────────────
+//
+import { ApolloFormatErrorPipe } from "./formatter/apollo.formatError";
+// ────────────────────────────────────────────────────────────────────────────────
+
+//
 // ─── CONSTANT ───────────────────────────────────────────────────────────────────
 //
 const PORT = 4000;
@@ -32,6 +38,7 @@ const PORT = 4000;
       container: Container, // di container
     }),
     context: ({ req, res }) => ({ req, res }),
+    formatError: ApolloFormatErrorPipe,
   });
   await apolloServer.start();
 

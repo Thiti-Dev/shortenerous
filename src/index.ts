@@ -3,17 +3,24 @@ import express = require("express");
 import { createConnection, useContainer } from "typeorm";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 
 import * as dotenv from 'dotenv'
+
+//
+// ─── RESOLVER ───────────────────────────────────────────────────────────────────
+//
+import { UserResolver } from "./resolvers/UserResolver";
+import { RedirectionResolver } from "./resolvers/RedirectionResolver";
+import { AuthResolver } from "./resolvers/AuthResolver";
+import { HandShakeResolver } from "./resolvers/HandShakeResolver";
+// ────────────────────────────────────────────────────────────────────────────────
+
 
 //
 // ─── IOC ────────────────────────────────────────────────────────────────────────
 //
 import { Container } from "typedi";
 import { Container as ORMDIContainer } from "typeorm-typedi-extensions";
-import { UserResolver } from "./resolvers/UserResolver";
-import { RedirectionResolver } from "./resolvers/RedirectionResolver";
 // ────────────────────────────────────────────────────────────────────────────────
 
 //
@@ -45,7 +52,7 @@ dotenv.config();
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HandShakeResolver, UserResolver,RedirectionResolver],
+      resolvers: [HandShakeResolver, UserResolver,RedirectionResolver,AuthResolver],
       container: Container, // di container
     }),
     context: ({ req, res }) => ({ req, res }),

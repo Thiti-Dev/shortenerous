@@ -27,9 +27,9 @@ export class Redirection extends BaseEntity {
 
   // SQLITE SUPPORTATION
 
-  @Column({ default: () => `now()` })
+  @CreateDateColumn({type: 'datetime' })
   created_at: Date
 
-  @Column({ default: () => `now()` })
+  @UpdateDateColumn({type: 'datetime' })
   updated_at: Date
 }

@@ -11,6 +11,7 @@ import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 import { Container } from "typedi";
 import { Container as ORMDIContainer } from "typeorm-typedi-extensions";
 import { UserResolver } from "./resolvers/UserResolver";
+import { RedirectionResolver } from "./resolvers/RedirectionResolver";
 // ────────────────────────────────────────────────────────────────────────────────
 
 //
@@ -34,7 +35,7 @@ const PORT = 4000;
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HandShakeResolver, UserResolver],
+      resolvers: [HandShakeResolver, UserResolver,RedirectionResolver],
       container: Container, // di container
     }),
     context: ({ req, res }) => ({ req, res }),

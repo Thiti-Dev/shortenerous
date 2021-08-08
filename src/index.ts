@@ -5,6 +5,8 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HandShakeResolver } from "./resolvers/HandShakeResolver";
 
+import * as dotenv from 'dotenv'
+
 //
 // ─── IOC ────────────────────────────────────────────────────────────────────────
 //
@@ -23,12 +25,20 @@ import { ApolloFormatErrorPipe } from "./formatter/apollo.formatError";
 //
 // ─── CONSTANT ───────────────────────────────────────────────────────────────────
 //
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 // ────────────────────────────────────────────────────────────────────────────────
+
+//
+// ─── LOAD ENV INTO THE PROCESS SCOPE ────────────────────────────────────────────
+//
+dotenv.config();
+// ────────────────────────────────────────────────────────────────────────────────
+
 
 // IIFE XD
 (async () => {
   const app = express();
+
 
   useContainer(ORMDIContainer);
   await createConnection();

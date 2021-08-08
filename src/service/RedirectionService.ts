@@ -13,4 +13,7 @@ export class RedirectionService {
     async createRedirection(input:CreateRedirectionInput){
         return this.redirectionRepository.createRedirection(input)
     }
+    async getRedirection(path:string){
+        return this.redirectionRepository.getRedirection(path)
+    }
 }

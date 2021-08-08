@@ -15,4 +15,7 @@ export class RedirectionRepository extends Repository<Redirection> {
         redirection.prefer_path = createRandomString(10,true)
         return await redirection.save()
     }
+    async getRedirection(path:string){
+        return await this.findOne({prefer_path:path})
+    }
 }

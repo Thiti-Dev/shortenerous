@@ -15,4 +15,11 @@ export class RedirectionResolver {
   ) {
     return this.redirectionService.createRedirection(input)
   }
+
+  @Query(() => Redirection,{nullable:true})
+  async redirection(
+    @Arg("path", () => String) path:string
+  ){
+    return this.redirectionService.getRedirection(path)
+  }
 }
